@@ -4,7 +4,7 @@
 
 - [x] Create book dataset
 - [x] Create user dataset
-- [ ] Add dynamic functions for datasets
+- [x] Add dynamic functions for datasets
   - [x] Add
   - [x] Remove
   - [x] Edit

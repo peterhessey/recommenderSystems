@@ -80,6 +80,18 @@ class csvUpdater():
                     csv_writer.writerow(new_row)
                 except:
                     print('Row not writeable.')
+
+    def validateLogin(self, username, password):
+        with open(self.csv_file, 'r') as user_logins_file:
+            csv_reader = csv.reader(user_logins_file)
+            for row in csv_reader:
+                if row != []:
+                    if row[1] == username and row[2] == password:
+                        return True
+
+        
+        return False
+
     def getNewRow(self, row, column_num, new_val):
         new_row = []
         for i in range(len(row)):
