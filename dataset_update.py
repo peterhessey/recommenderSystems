@@ -24,7 +24,7 @@ class csvUpdater():
                             if row[0] != primary_key:
                                 writer.writerow(row)
                         else:
-                            if row[0] != primary_key and row[1] != secondary_key:
+                            if row[0] != primary_key or row[1] != secondary_key:
                                 writer.writerow(row)
 
         os.remove(self.csv_file)
