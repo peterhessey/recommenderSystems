@@ -12,16 +12,13 @@ def output():
 
 @app.route('/receiver', methods = ['POST'])
 def worker():
-    # read json + reply
-    data = request.get_json()
-    print(data)
-	# result = ''
+	# read json + reply
+	data = request.get_json()
+	result = ' '
 
-	# for item in data:
-	# 	# loop over every row
-	# 	result += str(item['make']) + '\n'
-
-    return 'result'
+	for item in data:
+		# loop over every row
+		result += str(item['make']) + '\n'
 
 if __name__ == '__main__':
 	# run!
