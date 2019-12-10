@@ -10,7 +10,7 @@ with open('./dataset/ratings.csv', 'w') as my_csv_file:
     ratings = {}
 
     for user_ID in range(30):
-        ratings_to_make = 5
+        ratings_to_make = 10
 
         while ratings_to_make != 0:
             make_rating = True
@@ -24,7 +24,7 @@ with open('./dataset/ratings.csv', 'w') as my_csv_file:
 
             if make_rating:
                 ratings[user_ID].append(new_book_ID)
-                book_rating = random.randint(0, 5)
+                book_rating = random.randint(1, 5)
                 row = [str(user_ID), str(new_book_ID), str(book_rating)]
                 csv_writer.writerow(row)
                 ratings_to_make -= 1

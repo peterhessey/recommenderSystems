@@ -10,6 +10,16 @@ class csvUpdater():
         """
         self.csv_file = './dataset/' + csv_filename
 
+    def getData(self):
+        with open(self.csv_file, 'r') as csv_to_return:
+            csv_reader = csv.reader(csv_to_return)
+            data = []
+            for row in csv_reader:
+                if row != [] and csv_reader.line_num != 1:
+                    data.append(row)
+
+            return data
+
     def delete(self, primary_key, secondary_key=-1):
         use_2_keys = False if secondary_key == -1 else True
 
