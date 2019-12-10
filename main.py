@@ -1,4 +1,17 @@
+##############################################################################
+'''
+Web Techonlogies Coursework - Recommender Systems
+
+Completed as part of MEng in Computer Science at Durham University
+
+Recommender systems code largely based on tutorial that can be found at:
+https://beckernick.github.io/matrix-factorization-recommender/
+
+
+'''
+##############################################################################
 from csvScripts import csvUpdater
+from scipy.sparse.linalg import svds
 import pandas as pd
 import numpy as np 
 
@@ -15,12 +28,43 @@ def setUpMatrix():
 	books_df = pd.DataFrame(books_data, columns = ['book_ID', 'book_title', 'genres'])
 	
 	ratings_data = ratings_file.getData()
-	ratings_df = pd.DataFrame(ratings_data, columns = ['user_ID', 'book_ID', 'rating'])
-
-	ratings = ratings_df.pivot(index = 'user_ID', columns='book_ID', values='rating').fillna(0)
-	
-	ratings_matrix = ratings.as_matrix()
-	ratings_mean = np.mean(R, axis = 1)
+	ratings_df = pd.DataFrame(ratings_data, columns = ['user_ID', 'book_ID', 'book_rating'], dtype = int)
+	ratings = ratings_df.pivot(index = 'user_ID', columns='book_ID', values='book_rating').fillna('0')
+	ratings_matrix = np.asmatrix(ratings, dtype=int)
+	ratings_mean = np.mean(ratings_matrix, axis = 1)
 	ratings_demeaned = ratings_matrix - ratings_mean.reshape(-1,1)
+
+	U, sigma, Vt = svds(ratings_demeaned, k = 25)
+	sigma = np.diag(sigma)
+
+	all_predicted_ratings = np.dot(np.dot(U, sigma), Vt) + ratings_mean.reshape(-1, 1)
+	predictions_df = pd.DataFrame(all_predicted_ratings, columns = ratings.columns)
+
+	return books_df, ratings_df, predictions_df
+
+def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_recs=3):
+	# get user predictions and sort them
+	user_predictions = predictions_df.iloc[user_ID].sort_values(ascending=False)
+
+	# merge user and book data
+	user_ratings = ratings_df[ratings_df.user_ID == str(user_ID)]
+	user_book_data_merged = (user_ratings.merge(books_df, how='left', left_on='book_ID', right_on='book_ID',).
+								sort_values(['book_rating'], ascending=False)
+							)
+
+	print('User with ID %s has already rated %s movies' % (user_ID, user_book_data_merged.shape[0]))
+
+	recommended_books = (books_df[~books_df['book_ID'].isin(user_book_data_merged['book_ID'])].
+							merge(pd.DataFrame(user_predictions).reset_index(), how='left',
+							left_on='book_ID',
+							right_on='book_ID').
+						rename(columns={user_ID:'Predictions'}).
+						sort_values('Predictions', ascending=False).
+							iloc[:num_of_recs, -1]	
+						)
+	print(user_book_data_merged.head())
+	print(recommended_books)
 if __name__ == '__main__':
-	setUpMatrix()
+	user_ID = int(input('Enter ID of user to get recommendations for: '))
+	books_df, ratings_df, predictions_df = setUpMatrix()
+	getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df)
