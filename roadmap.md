@@ -3,7 +3,7 @@
 ## To Do
 
 - [x] Create book dataset
-- [ ] Create user dataset
+- [x] Create user dataset
 - [ ] Create user profiling
   - [ ] Investigate how to, decide on logins vs cookies
   - [ ] Pick and implement either choice 
