@@ -1,15 +1,16 @@
 import csv
 import random
+import string
 
 NUMBER_OF_BOOKS = 30
 
-with open('./dataset/ratings.csv', 'w') as my_csv_file:
+with open('./dataset/user_profiles.csv', 'w') as my_csv_file:
 
     csv_writer = csv.writer(my_csv_file)
-    rows = []
+    csv_writer.writerow(['user_ID', 'username', 'password'])
+    valid_chars = string.ascii_lowercase
     for user_ID in range(30):
-        for _ in range(10): 
-            book_ID = str(random.randint(0, 30))
-            book_rating = str(random.randint(0, 5))
-            data_entry = [str(user_ID), book_ID, book_rating]  
-            csv_writer.writerow(data_entry)
+        username = ''.join(random.choice(valid_chars) for _ in range(6))
+        password = 'password'
+        data_entry = [str(user_ID), username, password] 
+        csv_writer.writerow(data_entry)

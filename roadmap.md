@@ -4,9 +4,9 @@
 
 - [x] Create book dataset
 - [x] Create user dataset
-- [ ] Create user profiling
-  - [ ] Investigate how to, decide on logins vs cookies
-  - [ ] Pick and implement either choice 
+- [x] Create user profiling
+  - [x] Investigate how to, decide on logins vs cookies
+  - [x] Pick and implement either choice 
 - [ ] Recommender algorithm
   - [ ] Read and follow tutorial
   - [ ] Investigate additional features required
