@@ -13,9 +13,10 @@
   - [x] Pick and implement either choice 
   - [x] Implement dynamic functions to delete, add and edit users
 - [ ] Recommender algorithm
-  - [ ] Read and follow tutorial
-  - [ ] Investigate additional features required
-  - [ ] Implement additional features
+  - [x] Read and follow tutorial
+  - [ ] Change mean calculation thing as per top comment on tutorial
+  - [ ] Investigate additional features required(?)
+  - [ ] Implement additional features(?)
 - [ ] Create user interface
   - [ ] Get flask working
   - [ ] Create interactive features (AJAX and JSON)
@@ -24,3 +25,7 @@
   - [ ] Create README.txt with instructions for start up
   - [ ] Comment and document code properly
   - [ ] Submit
+
+## Problems
+
+- [ ] Not getting column names properly out of recommender system
