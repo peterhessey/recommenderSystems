@@ -1,25 +1,5 @@
-import sys
-
-from flask import Flask, render_template, request, redirect, Response
-import random, json
-
-app = Flask(__name__)
-
-@app.route('/')
-def output():
-	# serve index template
-	return render_template('index.html', name='Joe')
-
-@app.route('/receiver', methods = ['POST'])
-def worker():
-	# read json + reply
-	data = request.get_json()
-	result = ' '
-
-	for item in data:
-		# loop over every row
-		result += str(item['make']) + '\n'
+from dataset_update import csvUpdater
 
 if __name__ == '__main__':
-	# run!
-	app.run()
+	book_updater = csvUpdater('ratings.csv')
+	book_updater.delete('29', '14')

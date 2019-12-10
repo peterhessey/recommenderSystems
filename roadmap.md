@@ -4,9 +4,14 @@
 
 - [x] Create book dataset
 - [x] Create user dataset
+- [ ] Add dynamic functions for datasets
+  - [x] Add
+  - [x] Remove
+  - [x] Edit
 - [x] Create user profiling
   - [x] Investigate how to, decide on logins vs cookies
   - [x] Pick and implement either choice 
+  - [x] Implement dynamic functions to delete, add and edit users
 - [ ] Recommender algorithm
   - [ ] Read and follow tutorial
   - [ ] Investigate additional features required

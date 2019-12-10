@@ -1,0 +1,91 @@
+import os, sys, csv
+
+class csvUpdater():
+    def __init__(self, csv_filename):
+        """Constructor function for csvUpdater() class.
+        
+        Arguments:
+            csv_filename {str} -- Filename of the csv file to be manipulated
+            by the updater object.
+        """
+        self.csv_file = './dataset/' + csv_filename
+
+    def delete(self, primary_key, secondary_key=-1):
+        use_2_keys = False if secondary_key == -1 else True
+
+        with open(self.csv_file, 'r') as csv_to_read:
+            with open('./dataset/copy.csv', 'w') as csv_to_write:
+                reader = csv.reader(csv_to_read)
+                writer = csv.writer(csv_to_write)
+
+                for row in reader:
+                    if row != []:
+                        if not use_2_keys:
+                            if row[0] != primary_key:
+                                writer.writerow(row)
+                        else:
+                            if row[0] != primary_key and row[1] != secondary_key:
+                                writer.writerow(row)
+
+        os.remove(self.csv_file)
+        os.rename('./dataset/copy.csv', self.csv_file)
+
+    def update(self, primary_key, column_num, new_val, secondary_key=-1):
+        use_2_keys = False if secondary_key == -1 else True
+
+        with open(self.csv_file, 'r') as csv_to_read:
+            with open('./dataset/copy.csv', 'w') as csv_to_write:
+                reader = csv.reader(csv_to_read)
+                writer = csv.writer(csv_to_write)
+
+                for row in reader:
+                    if row != []:
+                        if not use_2_keys:
+                            if row[0] != primary_key:
+                                writer.writerow(row)
+                            else:
+                                row = self.getNewRow(row, column_num, new_val)
+                                writer.writerow(row)
+
+                        else:
+                            if row[0] != primary_key and row[1] != secondary_key:
+                                writer.writerow(row)
+                            else:
+                                row = self.getNewRow(row, column_num, new_val)
+                                writer.writerow(row)
+
+        os.remove(self.csv_file)
+        os.rename('./dataset/copy.csv', self.csv_file)
+
+    def newRow(self, new_row):
+        valid_row = True
+        with open(self.csv_file, 'r') as csv_to_update:
+            csv_reader = csv.reader(csv_to_update)
+
+            for row in csv_reader:
+                if row != []:
+                    if len(row) != len(new_row):
+                        print('Invalid input, incorrect number of values.')
+                        valid_row = False
+                        break
+                    elif row[0] == new_row[0]:
+                        print('Not a unique ID, row already exists. Use update instead!')
+                        valid_row = False
+                        break
+
+        if valid_row:
+            with open(self.csv_file, 'a') as csv_to_append:
+                csv_writer = csv.writer(csv_to_append)
+                try:
+                    csv_writer.writerow(new_row)
+                except:
+                    print('Row not writeable.')
+    def getNewRow(self, row, column_num, new_val):
+        new_row = []
+        for i in range(len(row)):
+            if i != column_num:
+                new_row.append(row[i])
+            else:
+                new_row.append(str(new_val))
+        
+        return new_row
