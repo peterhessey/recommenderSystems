@@ -12,9 +12,9 @@
   - [x] Investigate how to, decide on logins vs cookies
   - [x] Pick and implement either choice 
   - [x] Implement dynamic functions to delete, add and edit users
-- [ ] Recommender algorithm
+- [x] Recommender algorithm
   - [x] Read and follow tutorial
-  - [ ] Change mean calculation thing as per top comment on tutorial
+  - [x] Change mean calculation thing as per top comment on tutorial
   - [ ] Investigate additional features required(?)
   - [ ] Implement additional features(?)
 - [ ] Create user interface

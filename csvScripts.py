@@ -16,8 +16,16 @@ class csvUpdater():
             data = []
             for row in csv_reader:
                 if row != [] and csv_reader.line_num != 1:
-                    data.append(row)
+                    new_row = []
+                    for item in row:
+                        
+                        try:
+                            new_row.append(int(item))
+                        except:
+                            new_row.append(item)
 
+                    data.append(new_row)
+                        
             return data
 
     def delete(self, primary_key, secondary_key=-1):
