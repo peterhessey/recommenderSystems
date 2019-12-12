@@ -1,6 +1,7 @@
 import os, sys, csv
 
 class csvUpdater():
+
     def __init__(self, csv_filename):
         """Constructor function for csvUpdater() class.
         
@@ -10,7 +11,13 @@ class csvUpdater():
         """
         self.csv_file = './dataset/' + csv_filename
 
+
     def getData(self):
+        """Gets and returns the data in the CSV file
+        
+        Returns:
+            [[int/str]] -- The csv data
+        """
         with open(self.csv_file, 'r') as csv_to_return:
             csv_reader = csv.reader(csv_to_return)
             data = []
@@ -28,7 +35,17 @@ class csvUpdater():
                         
             return data
 
+
     def delete(self, primary_key, secondary_key=-1):
+        """Delete a row from the CSV file
+        
+        Arguments:
+            primary_key {int} -- Primary key of the row
+        
+        Keyword Arguments:
+            secondary_key {int} -- Secondary key if the csv files uses 
+            composite keys. (default: {-1})
+        """
         use_2_keys = False if secondary_key == -1 else True
 
         with open(self.csv_file, 'r') as csv_to_read:
@@ -48,7 +65,22 @@ class csvUpdater():
         os.remove(self.csv_file)
         os.rename('./dataset/copy.csv', self.csv_file)
 
+
     def update(self, primary_key, column_num, new_val, secondary_key=-1):
+        """Updates a row in the CSV file.
+        
+        Arguments:
+            primary_key {int} -- Primary key of the row
+            column_num {int} -- Column to be updated
+            new_val {int} -- The value to be put in the row
+        
+        Keyword Arguments:
+            secondary_key {int} -- Secondary key in case the CSV file uses 
+            composite keys. (default: {-1})
+        
+        Returns:
+            bool -- True if succeeded, false otherwise
+        """
         use_2_keys = False if secondary_key == -1 else True
         updated = False
 
@@ -81,7 +113,13 @@ class csvUpdater():
             os.rename('./dataset/copy.csv', self.csv_file)
             return True
 
+
     def newRow(self, new_row):
+        """Writes a new row into the CSV file
+        
+        Arguments:
+            new_row {[int/str]} -- The new row to write
+        """
         valid_row = True
         with open(self.csv_file, 'r') as csv_to_update:
             csv_reader = csv.reader(csv_to_update)
@@ -101,7 +139,19 @@ class csvUpdater():
                 except:
                     print('Row not writeable.')
 
+
     def validateLogin(self, username, password):
+        """Given a username and password, checks if it is a registered account
+        and that the password is correct.
+        
+        Arguments:
+            username {str} -- The username
+            password {str} -- The password
+        
+        Returns:
+            bool, int -- True if the user logs in, as well as the ID of the 
+            logged in user (used for cookies)
+        """
         with open(self.csv_file, 'r') as user_logins_file:
             csv_reader = csv.reader(user_logins_file)
             for row in csv_reader:
@@ -112,7 +162,18 @@ class csvUpdater():
         
         return False, -1
 
+
     def getNewRow(self, row, column_num, new_val):
+        """Creates a new row to write into the CSV file
+        
+        Arguments:
+            row {[int]} -- The old row
+            column_num {int} -- The column to rewrite
+            new_val {int} -- The value to write into the row
+        
+        Returns:
+            [int] -- The newly created row
+        """
         new_row = []
         for i in range(len(row)):
             if i != column_num:

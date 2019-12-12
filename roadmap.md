@@ -28,7 +28,7 @@
   - [x] Create interactive features (AJAX and JSON)
 - [ ] Final details
   - [ ] Create README.md
-  - [ ] Create README.txt with instructions for start up
+  - [x] Create README.txt with instructions for start up
   - [ ] Comment and document code properly
   - [ ] Submit
 
