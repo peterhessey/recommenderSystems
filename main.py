@@ -1,5 +1,6 @@
 ##############################################################################
 '''
+
 Web Techonlogies Coursework - Recommender Systems
 
 Completed as part of MEng in Computer Science at Durham University
@@ -7,19 +8,36 @@ Completed as part of MEng in Computer Science at Durham University
 Recommender systems code largely based on tutorial that can be found at:
 https://beckernick.github.io/matrix-factorization-recommender/
 
-
 '''
 ##############################################################################
 from csvScripts import csvUpdater
 from scipy.sparse.linalg import svds
+from flask import Flask, redirect, url_for, request, render_template
 import pandas as pd
 import numpy as np 
 
+# set up Flask app
+app = Flask(__name__)
+
+# dataset and user profile files
 BOOKS = 'books.csv'
 RATINGS = 'ratings.csv'
 USERS = 'user_profiles.csv'
 
+
 def setUpMatrix():
+	"""Initialise the dataframes for the recommender algorithm. Reads in data
+	from the CSV files, converts the data into Pandas dataframes. Then 
+	performs matrix manipulation in order to provide a suitable data format for
+	the recommender algorithm. 
+
+	Finally uses matrix singularisation to get predicted ratings for each user
+	and book.
+	
+	Returns:
+		DataFrame, DataFrame, DataFrame -- Books, ratings and predicited 
+		ratings dataframes.
+	"""
 	books_file = csvUpdater(BOOKS)
 	ratings_file = csvUpdater(RATINGS)
 	users_file = csvUpdater(USERS)
@@ -35,12 +53,6 @@ def setUpMatrix():
 	ratings_demeaned = ratings.sub(ratings.mean(axis=1), axis=0)
 	ratings_demeaned = ratings_demeaned.fillna(0).values
 
-
-
-	# ratings_matrix = np.asmatrix(ratings)
-	# ratings_mean = np.mean(ratings_matrix, axis = 1)
-	# ratings_demeaned = ratings_matrix - ratings_mean.reshape(-1,1)
-
 	U, sigma, Vt = svds(ratings_demeaned, k = 25)
 	sigma = np.diag(sigma)
 
@@ -48,6 +60,7 @@ def setUpMatrix():
 	predictions_df = pd.DataFrame(all_predicted_ratings, columns = ratings.columns)
 
 	return books_df, ratings_df, predictions_df
+
 
 def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_recs=3):
 	# get user predictions and sort them
@@ -85,6 +98,8 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 
 
 	return recommended_books
+
+
 if __name__ == '__main__':
 	user_ID = int(input('Enter ID of user to get recommendations for: '))
 	books_df, ratings_df, predictions_df = setUpMatrix()   

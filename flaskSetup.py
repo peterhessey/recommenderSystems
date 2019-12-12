@@ -1,6 +1,10 @@
 from flask import Flask, redirect, url_for, request, render_template
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 @app.route('/admin')
 def hello_admins():
     return 'WElcome to the danger zone'

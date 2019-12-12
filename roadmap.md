@@ -18,7 +18,13 @@
   - [ ] Investigate additional features required(?)
   - [ ] Implement additional features(?)
 - [ ] Create user interface
-  - [ ] Get flask working
+  - [x] Get flask working
+  - [ ] Create working login page
+    - [ ] Cookies to track logins
+  - [ ] Create user home page
+    - [ ] Display liked books
+    - [ ] Display recommended books
+    - [ ] Allow new ratings to be input
   - [ ] Create interactive features (AJAX and JSON)
 - [ ] Final details
   - [ ] Create README.md
