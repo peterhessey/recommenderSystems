@@ -191,10 +191,9 @@ def newRating():
 
 	if rating >= 0 and rating <= 5:
 		rating_updater = csvUpdater(RATINGS)
-		rating_updater.update(user_ID, 2, rating, book_ID)
-		# if not rating_updater.update(book_ID, 1, rating):
-		# 	new_row = [user_ID, book_ID, rating]
-		# 	rating_updater.newRow(new_row)
+		if not rating_updater.update(user_ID, 2, rating, book_ID):
+			new_row = [user_ID, book_ID, rating]
+			rating_updater.newRow(new_row)
 
 		return redirect(url_for('loadHomePage'))
 

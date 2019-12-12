@@ -14,7 +14,7 @@ with open('./dataset/ratings.csv', 'w') as my_csv_file:
 
         while ratings_to_make != 0:
             make_rating = True
-            new_book_ID = random.randint(0, 30)
+            new_book_ID = random.randint(1, 30)
 
             if user_ID in ratings:
                 if new_book_ID in ratings[user_ID]:
