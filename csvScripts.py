@@ -60,20 +60,22 @@ class csvUpdater():
                 for row in reader:
                     if row != []:
                         if not use_2_keys:
-                            if row[0] != primary_key:
+                            if row[0] != str(primary_key):
                                 writer.writerow(row)
                             else:
                                 row = self.getNewRow(row, column_num, new_val)
                                 writer.writerow(row)
                                 updated = True
                         else:
-                            if row[0] != primary_key and row[1] != secondary_key:
+                            if row[0] != str(primary_key) and row[1] != str(secondary_key):
                                 writer.writerow(row)
                             else:
+                                print('updating row')
                                 row = self.getNewRow(row, column_num, new_val)
                                 writer.writerow(row)
                                 updated = True
         if not updated:
+            print('failing')
             return False
         else:
                 
