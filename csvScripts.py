@@ -105,10 +105,10 @@ class csvUpdater():
             for row in csv_reader:
                 if row != []:
                     if row[1] == username and row[2] == password:
-                        return True
+                        return True, row[0]
 
         
-        return False
+        return False, -1
 
     def getNewRow(self, row, column_num, new_val):
         new_row = []

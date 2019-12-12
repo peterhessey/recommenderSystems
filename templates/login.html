@@ -1,9 +1,18 @@
 <html>
-   <body>
-      <form action = "http://localhost:5000/login" method = "post">
-         <p>Enter Name:</p>
-         <p><input type = "text" name = "name" /></p>
-         <p><input type = "submit" value = "submit" /></p>
-      </form>
-   </body>
+    <head>
+        <script type = "text/javascript" src = "{{ url_for('static', filename = 'scripts.js') }}" ></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+    </head>
+    
+    <body>
+        {% if invalid == 1 %}
+            <script>invalidLogin()</script>
+        {% endif %}
+        <form action = "http://localhost:5000/attemptLogin" method = "post">
+            <p>Enter Name:</p>
+            <p><input type = "text" name = "username" /></p>
+            <p><input type = "password" name = "password" /></p>
+            <p><input type = "submit" value = "submit" /></p>
+        </form>
+</body>
 </html>

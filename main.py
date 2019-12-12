@@ -12,7 +12,7 @@ https://beckernick.github.io/matrix-factorization-recommender/
 ##############################################################################
 from csvScripts import csvUpdater
 from scipy.sparse.linalg import svds
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, make_response
 import pandas as pd
 import numpy as np 
 
@@ -92,6 +92,7 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 
 	print('User with ID %s has already rated %s movies' % (user_ID, user_book_data_merged.shape[0]))
 
+	# create recommended books dataframe
 	recommended_books = (books_df[~books_df['book_ID'].isin(user_book_data_merged['book_ID'])].
 			merge(pd.DataFrame(user_predictions).reset_index(), how = 'left',
 				left_on = 'book_ID',
@@ -103,8 +104,73 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 
 	return recommended_books
 
+# @app.route('/getCookie')
+# def setCookes():
+# 	resp = make_response(render_template('index.html'))
+# 	resp.set_cookie('MyCookie', 'ThISISIACOOKIE')
+# 	return resp
+
+
+@app.route('/')
+def index():
+	if request.cookies.get('WebTechCookie') == None:
+		return redirect(url_for('loadLoginPage', invalid_login=0))
+	else:
+		return redirect(url_for('loadHomePage'))
+
+
+@app.route('/login/<invalid_login>')
+def loadLoginPage(invalid_login):
+	print('loading login page')
+	return render_template('login.html', invalid=int(invalid_login))
+
+
+@app.route('/attemptLogin', methods=['POST'])
+def login():
+	user = request.form['username']
+	password = request.form['password']
+
+	loginChecker = csvUpdater(USERS)
+
+	valid_login, user_ID = loginChecker.validateLogin(user, password)
+
+	if valid_login:
+		resp = redirect(url_for('loadHomePage'))
+		resp.set_cookie('WebTechCookie', user_ID)
+	else:
+		resp = redirect(url_for('loadLoginPage', invalid_login=1))
+		resp.set_cookie('WebTechCookie', '', expires=0)
+
+	return resp
+
+
+@app.route('/home')
+def loadHomePage():
+	user_ID = request.cookies.get('WebTechCookie')
+	if user_ID != None:
+		return render_template('index.html')
+	else:
+		return 'Please login to access this page'
+
+
+@app.route('/logout')
+def logout():
+		
+	resp = redirect(url_for('loadLoginPage', invalid_login=1))
+	resp.set_cookie('WebTechCookie', '', expires=0)
+
+	return resp
+
+# @app.route('/test')
+# def test():
+# 	resp = redirect(url_for('loadLoginPage', invalid_login=0))
+# 	resp.set_cookie('WebTechCookie', '', expires=0)
+# 	return resp
 
 if __name__ == '__main__':
-	user_ID = int(input('Enter ID of user to get recommendations for: '))
-	books_df, ratings_df, predictions_df = setUpMatrix()   
-	print(getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df))
+	app.debug = True
+	app.run()
+
+	# user_ID = int(input('Enter ID of user to get recommendations for: '))
+	# books_df, ratings_df, predictions_df = setUpMatrix()   
+	# print(getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df))
