@@ -12,18 +12,20 @@
             <script>newUser()</script>
         {% endif %}
         <form action = "http://localhost:5000/attemptLogin" method = "post">
-            <p>Enter Name:</p>
+            <p>Enter username:</p>
             <p><input type = "text" name = "username" /></p>
+            <p>Password:</p>
             <p><input type = "password" name = "password" /></p>
-            <p><input type = "submit" value = "submit" /></p>
+            <p><input type = "submit" value = "Submit" /></p>
         </form>
 
         <h2>Or register a new account</h2>
         <form action = "/register" method = "post">
-            <p>Enter Name:</p>
+            <p>Enter new username:</p>
             <p><input type = "text" name = "username" /></p>
+            <p>Password:</p>
             <p><input type = "password" name = "password" /></p>
-            <p><input type = "submit" value = "submit" /></p>
+            <p><input type = "submit" value = "Submit"/></p>
         </form>
 </body>
 </html>

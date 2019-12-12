@@ -1,61 +1,61 @@
 book_ID,book_title,book_genres
 
-1,Twilight,Young-Adult:Fantasy:Romance:Paranormal:Fiction
+1,Twilight,Young-Adult|Fantasy|Romance|Paranormal|Fiction
 
-2,Pride and Prejudice,Classics:Fiction:Romance:Historical:Adult:Literature
+2,Pride and Prejudice,Classics|Fiction|Romance|Historical|Adult|Literature
 
-3,To Kill a Mockingbird,Classics:Fiction:Historical:Academic
+3,To Kill a Mockingbird,Classics|Fiction|Historical|Academic
 
-4,The Book Thief,Historical:Fiction:Young-Adult:War:Classics
+4,The Book Thief,Historical|Fiction|Young-Adult|War|Classics
 
-5,New Moon,Young-Adult:Fantasy:Romance:Paranormal:Fiction
+5,New Moon,Young-Adult|Fantasy|Romance|Paranormal|Fiction
 
-6,The Elephant Tree,Thriller:Fiction:Mystery:Drama:Crime:Suspense
+6,The Elephant Tree,Thriller|Fiction|Mystery|Drama|Crime|Suspense
 
-7,City of Bones,Fantasy:Fiction:Young-Adult:Romance
+7,City of Bones,Fantasy|Fiction|Young-Adult|Romance
 
-8,The Lion the Witch and the Wardrobe,Fantasy:Classics:Fiction:Young-Adult:Childrens
+8,The Lion the Witch and the Wardrobe,Fantasy|Classics|Fiction|Young-Adult|Childrens
 
-9,The Diary of a Young Girl,Non-Fiction:Classics:Historical:Biography
+9,The Diary of a Young Girl,Non-Fiction|Classics|Historical|Biography
 
-10,The Zombie Room,Thriller:Fiction:Mystery:Crime:Drama:Suspense
+10,The Zombie Room,Thriller|Fiction|Mystery|Crime|Drama|Suspense
 
-11,Mistress Suffragette,Fiction:Historical:Novels:New-Adult
+11,Mistress Suffragette,Fiction|Historical|Novels|New-Adult
 
-12,The Da Vinci Code,Fiction:Mystery:Thriller:Suspense
+12,The Da Vinci Code,Fiction|Mystery|Thriller|Suspense
 
-13,Jane Eyre,Classics:Fiction:Romance
+13,Jane Eyre,Classics|Fiction|Romance
 
-14,Little Women,Classics:Fiction:Historical:Young-Adult:Romance:Literature:Childrens:Novels
+14,Little Women,Classics|Fiction|Historical|Young-Adult|Romance|Literature|Childrens|Novels
 
-15,Brainwalker,Young-Adult:Fiction
+15,Brainwalker,Young-Adult|Fiction
 
-16,The Kite Runner,Fiction:Historical:Contemporary
+16,The Kite Runner,Fiction|Historical|Contemporary
 
-17,The Lord of the Rings,Fantasy:Classics:Fiction
+17,The Lord of the Rings,Fantasy|Classics|Fiction
 
-18,The Great Gatsby,Classics:Fiction:Academic:Literature
+18,The Great Gatsby,Classics|Fiction|Academic|Literature
 
-19,Thirteen Reasons Why,Young-Adult:Contemporary:Fiction
+19,Thirteen Reasons Why,Young-Adult|Contemporary|Fiction
 
-20,1984,Classics:Fiction:Science-Fiction:Dystopian
+20,1984,Classics|Fiction|Science-Fiction|Dystopian
 
-21,Farenheit 451,Classics:Fiction:Science-Fiction:Literature:Novels:Fantasy:Adult
+21,Farenheit 451,Classics|Fiction|Science-Fiction|Literature|Novels|Fantasy|Adult
 
-22,Gone With the Wind,Classics:Fiction:Romance:Historical
+22,Gone With the Wind,Classics|Fiction|Romance|Historical
 
-23,Shiver,Young-Adult:Fantasy:Romance:Paranormal
+23,Shiver,Young-Adult|Fantasy|Romance|Paranormal
 
-24,Chasing the Red Queen,Fiction:Novels:Contemporary:New-Adult:Young-Adult:Romance:Adult:Fantasy
+24,Chasing the Red Queen,Fiction|Novels|Contemporary|New-Adult|Young-Adult|Romance|Adult|Fantasy
 
-25,American Psycho,Fiction:Horror:Thriller:Classics:Crime
+25,American Psycho,Fiction|Horror|Thriller|Classics|Crime
 
-26,Invisible Monsters,Fiction:Contemporary:Thriller:Mystery
+26,Invisible Monsters,Fiction|Contemporary|Thriller|Mystery
 
-27,Fight Club,Fiction:Thriller:Classics:Contemporary:Novels
+27,Fight Club,Fiction|Thriller|Classics|Contemporary|Novels
 
-28,Factotum,Fiction:Mystery:Thriller:Novels:Classics
+28,Factotum,Fiction|Mystery|Thriller|Novels|Classics
 
-29,The Wasp Factory,Fiction:Horror:Thriller:Mystery:Contemporary
+29,The Wasp Factory,Fiction|Horror|Thriller|Mystery|Contemporary
 
-30,Water for Elephants,Fiction:Historical:Romance
+30,Water for Elephants,Fiction|Historical|Romance

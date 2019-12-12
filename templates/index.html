@@ -29,10 +29,12 @@
          <table border =1>
             <tr>
                <th>Book Title</th>
+               <th>Genres</th>
             </tr>
             {% for book in data['recs'] %}
                <tr>
-                  <th>{{ book }}</th>
+                  <th>{{ book[0] }}</th>
+                  <th>{{ book[1] }}</th>
                </tr>
             {% endfor %}
          </table>
@@ -53,7 +55,7 @@
          </p>
          <label>Rating:</label>
          <p><input id=ratingInput type="number" name="rating" /></p>
-         <p><input id=submitRatingBtn type = "submit" value = "submit"/></p>
+         <p><input id=submitRatingBtn type = "submit" value = "Submit"/></p>
       </form>
    </body>
 </html>

@@ -106,6 +106,12 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 
 @app.route('/')
 def index():
+	"""Loads the index page, directs to home or login page if the user isn't
+	logged in.
+	
+	Returns:
+		response -- Redirect response
+	"""
 	if request.cookies.get('WebTechCookie') == None:
 		return redirect(url_for('loadLoginPage', login_code=0))
 	else:
@@ -114,12 +120,26 @@ def index():
 
 @app.route('/login/<login_code>')
 def loadLoginPage(login_code):
+	"""Loads the login page
+	
+	Arguments:
+		login_code {int} -- Determines what alert to display if any
+	
+	Returns:
+		response -- Renders login.html template
+	"""
 	print('Loading login page')
 	return render_template('login.html', code=int(login_code))
 
 
 @app.route('/attemptLogin', methods=['POST'])
 def login():
+	"""Handles the user login form.
+	
+	Returns:
+		response -- Redirects user depending on whether their login attempt
+		succeeded or not.
+	"""
 	user = request.form['username']
 	password = request.form['password']
 
@@ -139,6 +159,12 @@ def login():
 
 @app.route('/register', methods=['POST'])
 def regster():
+	"""Registers a new user.
+	
+	Returns:
+		response -- Redirects back to login page and displays new account 
+		created alert.
+	"""
 	username = request.form['username']
 	password = request.form['password']
 	new_user_creator = csvUpdater(USERS)
@@ -153,8 +179,14 @@ def regster():
 
 @app.route('/home/')
 def loadHomePage():
-	user_ID = int(request.cookies.get('WebTechCookie'))
+	"""Loads the home page html
+	
+	Returns:
+		response -- The home page template repsonse
+	"""
+	user_ID = request.cookies.get('WebTechCookie')
 	if user_ID != None:
+		user_ID = int(user_ID)
 		# getting username from csv files
 		csv_data_getter = csvUpdater(USERS)
 		username = csv_data_getter.getData()[0][1]
@@ -195,8 +227,10 @@ def loadHomePage():
 			book_recs = []
 			for i in range(len(recommendations)):
 				df_row = recommendations.iloc[i]
+				print(df_row)
 				recommendation = df_row['book_title']
-				book_recs.append(recommendation)
+				genres = df_row['genres']
+				book_recs.append([recommendation, genres])
 
 			
 			
@@ -217,6 +251,11 @@ def loadHomePage():
 
 @app.route('/rate', methods=['POST'])
 def newRating():
+	"""Creates a new / updates an existing rating.
+	
+	Returns:
+		response -- Redirect back to home page when complete
+	"""
 	book_ID = request.form['book_title']
 	rating = int(request.form['rating'])
 	user_ID = request.cookies.get('WebTechCookie')
@@ -230,10 +269,13 @@ def newRating():
 	return redirect(url_for('loadHomePage'))
 
 
-
 @app.route('/logout')
 def logout():
-		
+	"""Logs the user out
+	
+	Returns:
+		response -- Redirects the user back to the login page
+	"""
 	resp = redirect(url_for('loadLoginPage', login_code=0))
 	resp.set_cookie('WebTechCookie', '', expires=0)
 
