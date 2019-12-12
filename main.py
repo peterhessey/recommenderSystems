@@ -63,6 +63,22 @@ def setUpMatrix():
 
 
 def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_recs=3):
+	"""Uses the dataframes to format and return a set of recommended books for 
+	the user based on what they've rated previously.
+	
+	Arguments:
+		user_ID {int} -- The ID value of the user
+		books_df {DataFrame} -- DataFrame storing book data
+		ratings_df {DataFrame} -- DataFrame storing book ratings data
+		predictions_df {DataFrame} -- DataFrame storing predicted ratings for
+		each user and book.
+	
+	Keyword Arguments:
+		num_of_recs {int} -- Number of books to recommend (default: {3})
+	
+	Returns:
+		DataFrame -- DataFrame of recommended books and their associated data
+	"""
 	# get user predictions and sort them
 	user_predictions = predictions_df.iloc[user_ID].sort_values(ascending=False)
 
@@ -76,15 +92,6 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 
 	print('User with ID %s has already rated %s movies' % (user_ID, user_book_data_merged.shape[0]))
 
-	# recommended_books = (books_df[~books_df['book_ID'].isin(user_book_data_merged['book_ID'])].
-	# 						merge(pd.DataFrame(user_predictions).reset_index(), how='left',
-	# 						left_on='book_ID',
-	# 						right_on='book_ID').
-	# 					rename(columns={user_ID:'Predictions'}).
-	# 					sort_values('Predictions', ascending=False).
-	# 						iloc[:num_of_recs, -1]	
-	# 					)
-
 	recommended_books = (books_df[~books_df['book_ID'].isin(user_book_data_merged['book_ID'])].
 			merge(pd.DataFrame(user_predictions).reset_index(), how = 'left',
 				left_on = 'book_ID',
@@ -94,14 +101,10 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 						iloc[:num_of_recs, :-1]
 						)
 
-
-
-
 	return recommended_books
 
 
 if __name__ == '__main__':
 	user_ID = int(input('Enter ID of user to get recommendations for: '))
 	books_df, ratings_df, predictions_df = setUpMatrix()   
-
 	print(getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df))
