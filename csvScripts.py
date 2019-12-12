@@ -50,6 +50,7 @@ class csvUpdater():
 
     def update(self, primary_key, column_num, new_val, secondary_key=-1):
         use_2_keys = False if secondary_key == -1 else True
+        updated = False
 
         with open(self.csv_file, 'r') as csv_to_read:
             with open('./dataset/copy.csv', 'w') as csv_to_write:
@@ -64,16 +65,21 @@ class csvUpdater():
                             else:
                                 row = self.getNewRow(row, column_num, new_val)
                                 writer.writerow(row)
-
+                                updated = True
                         else:
                             if row[0] != primary_key and row[1] != secondary_key:
                                 writer.writerow(row)
                             else:
                                 row = self.getNewRow(row, column_num, new_val)
                                 writer.writerow(row)
-
-        os.remove(self.csv_file)
-        os.rename('./dataset/copy.csv', self.csv_file)
+                                updated = True
+        if not updated:
+            return False
+        else:
+                
+            os.remove(self.csv_file)
+            os.rename('./dataset/copy.csv', self.csv_file)
+            return True
 
     def newRow(self, new_row):
         valid_row = True
@@ -84,10 +90,6 @@ class csvUpdater():
                 if row != []:
                     if len(row) != len(new_row):
                         print('Invalid input, incorrect number of values.')
-                        valid_row = False
-                        break
-                    elif row[0] == new_row[0]:
-                        print('Not a unique ID, row already exists. Use update instead!')
                         valid_row = False
                         break
 

@@ -16,7 +16,7 @@
             <th>Book Title</th>
             <th>Rating</th>
          </tr>
-         {% for book in data['books'] %}
+         {% for book in data['user_books'] %}
               <tr>
                  <th>{{ book[0] }}</th>
                  <th>{{ book[1] }}</th>
@@ -36,5 +36,19 @@
          {% endfor %}
       </table>
 
+      <h2>Rate a book</h2>
+      <form action="/rate" method="post">
+         <label>Book to rate:</label>
+         <p>
+            <select name="book_title">
+               {% for book in data['all_books'] %}
+                  <option value="{{ book[0] }}">{{ book[1] }}</option>
+               {% endfor %}
+            </select>
+         </p>
+         <label>Rating:</label>
+         <p><input id=ratingInput type="number" name="rating" /></p>
+         <p><input type = "submit" value = "submit" onclick=validateRating()/></p>
+      </form>
    </body>
 </html>

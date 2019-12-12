@@ -136,7 +136,7 @@ def login():
 	return resp
 
 
-@app.route('/home')
+@app.route('/home/')
 def loadHomePage():
 	user_ID = int(request.cookies.get('WebTechCookie'))
 	if user_ID != None:
@@ -147,6 +147,7 @@ def loadHomePage():
 		data = {'username':username}
 
 		books_df, ratings_df, predictions_df = setUpMatrix()  
+		
 		# the books to recommend 
 		recommendations = getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df)
 		# all the ratings of the logged in user
@@ -163,7 +164,6 @@ def loadHomePage():
 			user_book = [df_row['book_title'], df_row['book_rating']]
 			user_books.append(user_book)
 
-		data['books'] = user_books
 
 		# books to recommend
 		book_recs = []
@@ -171,11 +171,33 @@ def loadHomePage():
 			df_row = recommendations.iloc[i]
 			recommendation = df_row['book_title']
 			book_recs.append(recommendation)
-	
+
+		
+		all_books = books_df.values
+		data['all_books'] = all_books	
+		data['user_books'] = user_books
 		data['recs'] = book_recs
+
 		return render_template('index.html', data=data)
 	else:
 		return 'Please login to access this page'
+
+
+@app.route('/rate', methods=['POST'])
+def newRating():
+	book_ID = request.form['book_title']
+	rating = int(request.form['rating'])
+	user_ID = request.cookies.get('WebTechCookie')
+
+	if rating >= 0 and rating <= 5:
+		rating_updater = csvUpdater(RATINGS)
+		if not rating_updater.update(book_ID, 1, rating):
+			new_row = [user_ID, book_ID, rating]
+			rating_updater.newRow(new_row)
+
+		return redirect(url_for('loadHomePage'))
+
+
 
 
 @app.route('/logout')

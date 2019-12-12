@@ -1,7 +1,5 @@
 book_ID,book_title,book_genres
 
-0,The Hunger Games,Young-Adult:Fiction:Science-Fiction:Fantasy
-
 1,Twiglight,Young-Adult:Fantasy:Romance:Paranormal:Fiction
 
 2,Pride and Prejudice,Classics:Fiction:Romance:Historical:Adult:Literature
@@ -61,3 +59,4 @@ book_ID,book_title,book_genres
 29,The Wasp Factory,Fiction:Horror:Thriller:Mystery:Contemporary
 
 30,Water for Elephants,Fiction:Historical:Romance
+
