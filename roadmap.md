@@ -29,7 +29,7 @@
 - [ ] Final details
   - [ ] Create README.md
   - [x] Create README.txt with instructions for start up
-  - [ ] Comment and document code properly
+  - [x] Comment and document code properly
   - [ ] Submit
 
 ## Problems

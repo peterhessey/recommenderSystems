@@ -128,7 +128,6 @@ def loadLoginPage(login_code):
 	Returns:
 		response -- Renders login.html template
 	"""
-	print('Loading login page')
 	return render_template('login.html', code=int(login_code))
 
 
@@ -209,11 +208,9 @@ def loadHomePage():
 			# all the ratings of the logged in user
 			user_ratings = ratings_df[ratings_df.user_ID == user_ID]
 			# all the books that have been rated by the logged in user
-			print('here')
 			user_book_data_merged = (user_ratings.merge(books_df, how='left', left_on='book_ID', right_on='book_ID',).
 										sort_values(['book_rating'], ascending=False)
 									)
-			print('not here')
 			
 			# books already rated
 			user_books = []
@@ -227,7 +224,6 @@ def loadHomePage():
 			book_recs = []
 			for i in range(len(recommendations)):
 				df_row = recommendations.iloc[i]
-				print(df_row)
 				recommendation = df_row['book_title']
 				genres = df_row['genres']
 				book_recs.append([recommendation, genres])
