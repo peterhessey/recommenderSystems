@@ -2,6 +2,10 @@ function logout(){
     window.location='/logout';
 }
 
+function newuser(){
+    alert("Looks like you haven't rated any books yet! Begin by reading and rating some books.")
+ }
+
 function validateRating(){
     rating_val = $('#rating_val').val()
 

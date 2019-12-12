@@ -136,6 +136,12 @@ def login():
 	return resp
 
 
+@app.route('/register', methods=['POST'])
+def regster():
+	username = request.form['username']
+	password = request.form['password']
+
+
 @app.route('/home/')
 def loadHomePage():
 	user_ID = int(request.cookies.get('WebTechCookie'))

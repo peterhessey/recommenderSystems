@@ -22,9 +22,9 @@
   - [x] Create working login page
     - [x] Cookies to track logins
   - [ ] Create user home page
-    - [ ] Display liked books
-    - [ ] Display recommended books
-    - [ ] Allow new ratings to be input
+    - [x] Display liked books
+    - [x] Display recommended books
+    - [x] Allow new ratings to be input
   - [ ] Create interactive features (AJAX and JSON)
 - [ ] Final details
   - [ ] Create README.md
