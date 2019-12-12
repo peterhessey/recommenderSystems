@@ -87,6 +87,6 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 	return recommended_books
 if __name__ == '__main__':
 	user_ID = int(input('Enter ID of user to get recommendations for: '))
-	books_df, ratings_df, predictions_df = setUpMatrix()
+	books_df, ratings_df, predictions_df = setUpMatrix()   
 
 	print(getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df))
