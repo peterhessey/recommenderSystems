@@ -90,8 +90,6 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 								sort_values(['book_rating'], ascending=False)
 							)
 
-	print('User with ID %s has already rated %s movies' % (user_ID, user_book_data_merged.shape[0]))
-
 	# create recommended books dataframe
 	recommended_books = (books_df[~books_df['book_ID'].isin(user_book_data_merged['book_ID'])].
 			merge(pd.DataFrame(user_predictions).reset_index(), how = 'left',
@@ -103,12 +101,6 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 						)
 
 	return recommended_books
-
-# @app.route('/getCookie')
-# def setCookes():
-# 	resp = make_response(render_template('index.html'))
-# 	resp.set_cookie('MyCookie', 'ThISISIACOOKIE')
-# 	return resp
 
 
 @app.route('/')
@@ -146,9 +138,42 @@ def login():
 
 @app.route('/home')
 def loadHomePage():
-	user_ID = request.cookies.get('WebTechCookie')
+	user_ID = int(request.cookies.get('WebTechCookie'))
 	if user_ID != None:
-		return render_template('index.html')
+		# getting username from csv files
+		csv_data_getter = csvUpdater(USERS)
+		username = csv_data_getter.getData()[0][1]
+		# data to send to the html form
+		data = {'username':username}
+
+		books_df, ratings_df, predictions_df = setUpMatrix()  
+		# the books to recommend 
+		recommendations = getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df)
+		# all the ratings of the logged in user
+		user_ratings = ratings_df[ratings_df.user_ID == user_ID]
+		# all the books that have been rated by the logged in user
+		user_book_data_merged = (user_ratings.merge(books_df, how='left', left_on='book_ID', right_on='book_ID',).
+									sort_values(['book_rating'], ascending=False)
+								)
+
+		# books already rated
+		user_books = []
+		for i in range(len(user_book_data_merged)):
+			df_row = user_book_data_merged.iloc[i]
+			user_book = [df_row['book_title'], df_row['book_rating']]
+			user_books.append(user_book)
+
+		data['books'] = user_books
+
+		# books to recommend
+		book_recs = []
+		for i in range(len(recommendations)):
+			df_row = recommendations.iloc[i]
+			recommendation = df_row['book_title']
+			book_recs.append(recommendation)
+	
+		data['recs'] = book_recs
+		return render_template('index.html', data=data)
 	else:
 		return 'Please login to access this page'
 
@@ -156,21 +181,12 @@ def loadHomePage():
 @app.route('/logout')
 def logout():
 		
-	resp = redirect(url_for('loadLoginPage', invalid_login=1))
+	resp = redirect(url_for('loadLoginPage', invalid_login=0))
 	resp.set_cookie('WebTechCookie', '', expires=0)
 
 	return resp
 
-# @app.route('/test')
-# def test():
-# 	resp = redirect(url_for('loadLoginPage', invalid_login=0))
-# 	resp.set_cookie('WebTechCookie', '', expires=0)
-# 	return resp
 
 if __name__ == '__main__':
 	app.debug = True
 	app.run()
-
-	# user_ID = int(input('Enter ID of user to get recommendations for: '))
-	# books_df, ratings_df, predictions_df = setUpMatrix()   
-	# print(getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df))

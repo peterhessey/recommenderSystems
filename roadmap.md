@@ -19,8 +19,8 @@
   - [ ] Implement additional features(?)
 - [ ] Create user interface
   - [x] Get flask working
-  - [ ] Create working login page
-    - [ ] Cookies to track logins
+  - [x] Create working login page
+    - [x] Cookies to track logins
   - [ ] Create user home page
     - [ ] Display liked books
     - [ ] Display recommended books
