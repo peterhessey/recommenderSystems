@@ -80,16 +80,17 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 		DataFrame -- DataFrame of recommended books and their associated data
 	"""
 	# get user predictions and sort them
-	user_predictions = predictions_df.iloc[user_ID].sort_values(ascending=False)
-
+	try:
+		user_predictions = predictions_df.iloc[user_ID].sort_values(ascending=False)
+	except:
+		return []
 	# merge user and book data
-	
 	user_ratings = ratings_df[ratings_df.user_ID == user_ID]
 
 	user_book_data_merged = (user_ratings.merge(books_df, how='left', left_on='book_ID', right_on='book_ID',).
 								sort_values(['book_rating'], ascending=False)
 							)
-
+	
 	# create recommended books dataframe
 	recommended_books = (books_df[~books_df['book_ID'].isin(user_book_data_merged['book_ID'])].
 			merge(pd.DataFrame(user_predictions).reset_index(), how = 'left',
@@ -106,15 +107,15 @@ def getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df, num_of_re
 @app.route('/')
 def index():
 	if request.cookies.get('WebTechCookie') == None:
-		return redirect(url_for('loadLoginPage', invalid_login=0))
+		return redirect(url_for('loadLoginPage', login_code=0))
 	else:
 		return redirect(url_for('loadHomePage'))
 
 
-@app.route('/login/<invalid_login>')
-def loadLoginPage(invalid_login):
-	print('loading login page')
-	return render_template('login.html', invalid=int(invalid_login))
+@app.route('/login/<login_code>')
+def loadLoginPage(login_code):
+	print('Loading login page')
+	return render_template('login.html', code=int(login_code))
 
 
 @app.route('/attemptLogin', methods=['POST'])
@@ -130,7 +131,7 @@ def login():
 		resp = redirect(url_for('loadHomePage'))
 		resp.set_cookie('WebTechCookie', user_ID)
 	else:
-		resp = redirect(url_for('loadLoginPage', invalid_login=1))
+		resp = redirect(url_for('loadLoginPage', login_code=1))
 		resp.set_cookie('WebTechCookie', '', expires=0)
 
 	return resp
@@ -140,6 +141,14 @@ def login():
 def regster():
 	username = request.form['username']
 	password = request.form['password']
+	new_user_creator = csvUpdater(USERS)
+	current_users = new_user_creator.getData()
+	num_of_users = len(current_users)
+	new_user_ID = num_of_users
+	new_row = [new_user_ID, username, password]
+	new_user_creator.newRow(new_row)
+
+	return redirect(url_for('loadLoginPage', login_code=2))
 
 
 @app.route('/home/')
@@ -153,36 +162,53 @@ def loadHomePage():
 		data = {'username':username}
 
 		books_df, ratings_df, predictions_df = setUpMatrix()  
-		# the books to recommend 
-		recommendations = getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df)
-		# all the ratings of the logged in user
-		user_ratings = ratings_df[ratings_df.user_ID == user_ID]
-		# all the books that have been rated by the logged in user
-		user_book_data_merged = (user_ratings.merge(books_df, how='left', left_on='book_ID', right_on='book_ID',).
-									sort_values(['book_rating'], ascending=False)
-								)
-		print(user_book_data_merged)
-		# books already rated
-		user_books = []
-		for i in range(len(user_book_data_merged)):
-			df_row = user_book_data_merged.iloc[i]
-			user_book = [df_row['book_title'], df_row['book_rating']]
-			user_books.append(user_book)
-
-
-		# books to recommend
-		book_recs = []
-		for i in range(len(recommendations)):
-			df_row = recommendations.iloc[i]
-			recommendation = df_row['book_title']
-			book_recs.append(recommendation)
-
-		
 		all_books = books_df.values
 		data['all_books'] = all_books	
-		data['user_books'] = user_books
-		print(user_books)
-		data['recs'] = book_recs
+		# the books to recommend 
+		recommendations = getRecommendedBooks(user_ID, books_df, ratings_df, predictions_df)
+
+		try:
+			if recommendations == []:
+				no_ratings = True
+		except:
+			no_ratings = False
+
+		if not no_ratings:
+			# all the ratings of the logged in user
+			user_ratings = ratings_df[ratings_df.user_ID == user_ID]
+			# all the books that have been rated by the logged in user
+			print('here')
+			user_book_data_merged = (user_ratings.merge(books_df, how='left', left_on='book_ID', right_on='book_ID',).
+										sort_values(['book_rating'], ascending=False)
+									)
+			print('not here')
+			
+			# books already rated
+			user_books = []
+			for i in range(len(user_book_data_merged)):
+				df_row = user_book_data_merged.iloc[i]
+				user_book = [df_row['book_title'], df_row['book_rating']]
+				user_books.append(user_book)
+
+
+			# books to recommend
+			book_recs = []
+			for i in range(len(recommendations)):
+				df_row = recommendations.iloc[i]
+				recommendation = df_row['book_title']
+				book_recs.append(recommendation)
+
+			
+			
+			data['new_user'] = False
+			data['user_books'] = user_books
+			data['recs'] = book_recs
+
+
+		else:
+			data['new_user'] = True
+
+		
 
 		return render_template('index.html', data=data)
 	else:
@@ -201,15 +227,14 @@ def newRating():
 			new_row = [user_ID, book_ID, rating]
 			rating_updater.newRow(new_row)
 
-		return redirect(url_for('loadHomePage'))
-
+	return redirect(url_for('loadHomePage'))
 
 
 
 @app.route('/logout')
 def logout():
 		
-	resp = redirect(url_for('loadLoginPage', invalid_login=0))
+	resp = redirect(url_for('loadLoginPage', login_code=0))
 	resp.set_cookie('WebTechCookie', '', expires=0)
 
 	return resp

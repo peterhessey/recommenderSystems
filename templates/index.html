@@ -9,36 +9,40 @@
    <body>
       <input type = "button" onclick = "logout()" value = "Log Out" />
 
-      <h1>Welcome back '{{ data['username'] }}'!</h1>
+      {% if data['new_user'] == False %}
+         <h1>Welcome back '{{ data['username'] }}'!</h1>
+         <h2>Here are the books you've rated so far:</h2>
+         <table border =1>
+            <tr>
+               <th>Book Title</th>
+               <th>Rating</th>
+            </tr>
+            {% for book in data['user_books'] %}
+               <tr>
+                  <th>{{ book[0] }}</th>
+                  <th>{{ book[1] }}</th>
+               </tr>
+            {% endfor %}
+         </table>
+         
+         <h2>Here are the books we recommend:</h2>
+         <table border =1>
+            <tr>
+               <th>Book Title</th>
+            </tr>
+            {% for book in data['recs'] %}
+               <tr>
+                  <th>{{ book }}</th>
+               </tr>
+            {% endfor %}
+         </table>
+      {% else %}
+         <h1>Welcome '{{ data['username'] }}'!</h1>
+         <h2>It appears you haven't rated any books yet. Rate at least 3 books below to get started!</h2>
       
-      <h2>Here are the books you've rated so far:</h2>
-      <table border =1>
-         <tr>
-            <th>Book Title</th>
-            <th>Rating</th>
-         </tr>
-         {% for book in data['user_books'] %}
-              <tr>
-                 <th>{{ book[0] }}</th>
-                 <th>{{ book[1] }}</th>
-              </tr>
-         {% endfor %}
-      </table>
-      
-      <h2>Here are the books we recommend:</h2>
-      <table border =1>
-         <tr>
-            <th>Book Title</th>
-         </tr>
-         {% for book in data['recs'] %}
-              <tr>
-                 <th>{{ book }}</th>
-              </tr>
-         {% endfor %}
-      </table>
-
+      {% endif %}
       <h2>Rate a book</h2>
-      <form action="/rate" method="post">
+      <form id="ratingForm" action="/rate" method="post">
          <label>Book to rate:</label>
          <p>
             <select name="book_title">
@@ -49,7 +53,7 @@
          </p>
          <label>Rating:</label>
          <p><input id=ratingInput type="number" name="rating" /></p>
-         <p><input type = "submit" value = "submit" onclick=validateRating()/></p>
+         <p><input id=submitRatingBtn type = "submit" value = "submit"/></p>
       </form>
    </body>
 </html>
