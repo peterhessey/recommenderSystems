@@ -67,15 +67,13 @@ class csvUpdater():
                                 writer.writerow(row)
                                 updated = True
                         else:
-                            if row[0] != str(primary_key) and row[1] != str(secondary_key):
+                            if row[0] != primary_key or row[1] != secondary_key:
                                 writer.writerow(row)
                             else:
-                                print('updating row')
                                 row = self.getNewRow(row, column_num, new_val)
                                 writer.writerow(row)
                                 updated = True
         if not updated:
-            print('failing')
             return False
         else:
                 
